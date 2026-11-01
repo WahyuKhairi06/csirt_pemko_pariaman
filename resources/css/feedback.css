@@ -1,0 +1,316 @@
+/* ==========================================================================
+   Universal Center-Screen Animated Feedback Modal (Success Checkmark & Alerts)
+   Digunakan di Portal Publik & Panel Admin Filament tanpa mengganggu kode inti.
+   ========================================================================== */
+
+.csirt-fb-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.22s ease-out,
+        visibility 0.22s ease-out;
+}
+
+.csirt-fb-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.csirt-fb-card {
+    position: relative;
+    width: 100%;
+    max-width: 23.5rem;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background-color: #ffffff;
+    padding: 2rem 1.75rem 1.5rem;
+    text-align: center;
+    box-shadow:
+        0 24px 48px -12px rgba(15, 23, 42, 0.28),
+        0 0 0 1px rgba(15, 23, 42, 0.06);
+    transform: scale(0.82) translateY(10px);
+    opacity: 0;
+    transition:
+        transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.22s ease-out;
+}
+
+.dark .csirt-fb-card {
+    background-color: #18181b;
+    box-shadow:
+        0 24px 48px -12px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.csirt-fb-overlay.is-visible .csirt-fb-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+/* Wadah ikon & efek denyut lingkaran */
+.csirt-fb-icon-wrap {
+    position: relative;
+    margin: 0 auto 1.125rem;
+    display: flex;
+    height: 5.25rem;
+    width: 5.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+}
+
+.csirt-fb-icon-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 9999px;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.csirt-fb-overlay.is-visible .csirt-fb-icon-wrap::before {
+    animation: csirtFbPulse 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Variasi warna berdasarkan status */
+.csirt-fb-card[data-status='success'] .csirt-fb-icon-wrap {
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(16, 185, 129, 0.06) 100%);
+    color: #10b981;
+}
+.csirt-fb-card[data-status='success'] .csirt-fb-icon-wrap::before {
+    border: 2px solid rgba(16, 185, 129, 0.35);
+}
+
+.csirt-fb-card[data-status='danger'] .csirt-fb-icon-wrap {
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.16) 0%, rgba(239, 68, 68, 0.06) 100%);
+    color: #ef4444;
+}
+.csirt-fb-card[data-status='danger'] .csirt-fb-icon-wrap::before {
+    border: 2px solid rgba(239, 68, 68, 0.35);
+}
+
+.csirt-fb-card[data-status='warning'] .csirt-fb-icon-wrap {
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.06) 100%);
+    color: #f59e0b;
+}
+.csirt-fb-card[data-status='warning'] .csirt-fb-icon-wrap::before {
+    border: 2px solid rgba(245, 158, 11, 0.35);
+}
+
+.csirt-fb-card[data-status='info'] .csirt-fb-icon-wrap {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0.06) 100%);
+    color: #3b82f6;
+}
+.csirt-fb-card[data-status='info'] .csirt-fb-icon-wrap::before {
+    border: 2px solid rgba(59, 130, 246, 0.35);
+}
+
+/* Animasi SVG Lingkaran & Ceklis */
+.csirt-fb-svg {
+    width: 3.75rem;
+    height: 3.75rem;
+    display: none;
+}
+
+.csirt-fb-card[data-status='success'] .csirt-fb-svg--success,
+.csirt-fb-card[data-status='danger'] .csirt-fb-svg--danger,
+.csirt-fb-card[data-status='warning'] .csirt-fb-svg--warning,
+.csirt-fb-card[data-status='info'] .csirt-fb-svg--info {
+    display: block;
+}
+
+.csirt-fb-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+}
+
+.csirt-fb-mark {
+    stroke-dasharray: 56;
+    stroke-dashoffset: 56;
+}
+
+.csirt-fb-overlay.is-visible.is-animating .csirt-fb-circle {
+    animation: csirtFbCircleDraw 0.48s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.csirt-fb-overlay.is-visible.is-animating .csirt-fb-mark {
+    animation: csirtFbMarkDraw 0.36s cubic-bezier(0.65, 0, 0.45, 1) 0.2s forwards;
+}
+
+/* Tipografi Judul & Pesan */
+.csirt-fb-title {
+    margin: 0 0 0.375rem;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+}
+
+.dark .csirt-fb-title {
+    color: #f8fafc;
+}
+
+.csirt-fb-message {
+    margin: 0 0 1.25rem;
+    font-size: 0.925rem;
+    line-height: 1.55;
+    color: #475569;
+}
+
+.dark .csirt-fb-message {
+    color: #94a3b8;
+}
+
+/* Tombol OK / Tutup */
+.csirt-fb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 7.5rem;
+    border-radius: 0.625rem;
+    border: none;
+    background-color: #1c355e;
+    padding: 0.55rem 1.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(28, 53, 94, 0.22);
+    transition:
+        background-color 0.15s ease,
+        transform 0.12s ease;
+}
+
+.csirt-fb-btn:hover {
+    background-color: #152847;
+}
+
+.csirt-fb-btn:active {
+    transform: scale(0.97);
+}
+
+.csirt-fb-btn:focus-visible {
+    outline: 2px solid #1c355e;
+    outline-offset: 2px;
+}
+
+.csirt-fb-card[data-status='success'] .csirt-fb-btn {
+    background-color: #059669;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+}
+.csirt-fb-card[data-status='success'] .csirt-fb-btn:hover {
+    background-color: #047857;
+}
+
+.csirt-fb-card[data-status='danger'] .csirt-fb-btn {
+    background-color: #dc2626;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+.csirt-fb-card[data-status='danger'] .csirt-fb-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* Progress bar waktu tutup otomatis */
+.csirt-fb-progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: rgba(15, 23, 42, 0.06);
+}
+
+.dark .csirt-fb-progress-track {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.csirt-fb-progress-bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left center;
+    background-color: #10b981;
+}
+
+.csirt-fb-card[data-status='danger'] .csirt-fb-progress-bar {
+    background-color: #ef4444;
+}
+.csirt-fb-card[data-status='warning'] .csirt-fb-progress-bar {
+    background-color: #f59e0b;
+}
+.csirt-fb-card[data-status='info'] .csirt-fb-progress-bar {
+    background-color: #3b82f6;
+}
+
+.csirt-fb-overlay.is-visible.is-animating .csirt-fb-progress-bar {
+    animation: csirtFbProgress var(--csirt-fb-duration, 5000ms) linear forwards;
+}
+
+/* Sembunyikan visual toast pojok Filament yang sudah ditampilkan di tengah layar,
+   tetapi biarkan di DOM agar Livewire & pengujian otomatis tetap berjalan normal */
+.fi-no-notification.csirt-fi-toast-intercepted {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: fixed !important;
+    top: -9999px !important;
+}
+
+@keyframes csirtFbCircleDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes csirtFbMarkDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes csirtFbPulse {
+    0% {
+        opacity: 0.75;
+        transform: scale(0.85);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.28);
+    }
+}
+
+@keyframes csirtFbProgress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .csirt-fb-overlay,
+    .csirt-fb-card {
+        transition: none !important;
+    }
+    .csirt-fb-circle,
+    .csirt-fb-mark {
+        stroke-dashoffset: 0 !important;
+        animation: none !important;
+    }
+    .csirt-fb-icon-wrap::before {
+        animation: none !important;
+    }
+}
+

@@ -1,0 +1,43 @@
+/* Pemetaan token ke Tailwind CSS v4 (konfigurasi CSS-first, tanpa tailwind.config.js).
+   Letakkan setelah tokens.css:
+
+     @import "tailwindcss";
+     @import "./tokens.css";
+     @import "./theme.css";
+
+   Warna memakai `@theme inline` agar utilitas (bg-brand-700, text-ink, dst.)
+   selalu merujuk ke variabel di tokens.css. Font dan radius memakai nilai
+   langsung yang identik dengan tokens.css. */
+
+@theme inline {
+  --color-navy-900: var(--navy-900);
+  --color-brand-700: var(--brand-700);
+  --color-brand-900: var(--brand-900);
+  --color-accent-100: var(--accent-100);
+  --color-accent-400: var(--accent-400);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--border);
+  --color-line-input: var(--border-input);
+  --color-on-navy-muted: var(--on-navy-muted);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+}
+
+@theme {
+  --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
